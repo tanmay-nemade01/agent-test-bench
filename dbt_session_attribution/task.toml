@@ -1,0 +1,20 @@
+version = "1.0"
+
+[metadata]
+name = "dbt-session-attribution"
+description = "Implement sessionization and time-decay multi-touch attribution in a single dbt model"
+difficulty = "very_hard"
+category = "analytics"
+tags = ["dbt", "duckdb", "attribution", "sessionization", "window-functions"]
+
+[verifier]
+timeout_sec = 900.0
+
+[agent]
+timeout_sec = 900.0
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
