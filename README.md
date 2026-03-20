@@ -26,6 +26,9 @@ The application includes robust Docker handling for Windows and Linux/macOS envi
 - **Interactive task selection** and instruction rendering
 - **Docker image build orchestration** per task
 - **Container lifecycle management** (create/start/copy/cleanup)
+- **Agentic solve mode** with model selection and API-key based execution
+- **Mistral model support** (`mistral-small/medium/large-latest`)
+- **Instruction-only container pattern** for agent generation isolation
 - **Solution execution** (`/solution/solve.sh`) with live logs
 - **Test execution via pytest** (`/tests/test_outputs.py`) with visible output
 - **One-click Build → Solve → Test flow**
@@ -94,6 +97,20 @@ Container naming convention:
 
 - `task-container-<task_name>`
 
+### Agentic Solve Path (Optional)
+
+When **Use agentic solver** is enabled in the sidebar:
+
+1. The app creates a **separate container** for instruction access only.
+2. Only `instruction.md` is copied into that container.
+3. The instruction content is sent to the selected Mistral model.
+4. The generated script is saved as a runtime `solve.sh` artifact.
+5. Tests validate the outputs produced by this agent-generated solve script.
+
+Instruction-only container naming convention:
+
+- `instruction-only-<task_name>`
+
 ### 3) Run Tests
 Runs `test_outputs.py` using `pytest` in-container (not plain Python execution), ensuring test functions are actually executed and results are visible in the UI.
 
@@ -128,6 +145,14 @@ Install dependencies from `requirements.txt` and launch Streamlit:
 2. Start the app with Streamlit.
 3. Open the local Streamlit URL displayed in your terminal.
 
+### API Keys (`.env`)
+
+For agent mode, define your Mistral key in project root `.env`:
+
+- `MISTRAL_API_KEY=...`
+
+The app will also let you enter/override the key directly in the sidebar.
+
 ---
 
 ## Usage Guide
@@ -138,6 +163,7 @@ Install dependencies from `requirements.txt` and launch Streamlit:
 4. Optionally inspect scripts in **Files** tab.
 5. In **Run & Test** tab:
 	- Click **Build Image**
+	- *(Optional: agent mode)* Click **Generate solve.sh**
 	- Click **Run solve.sh**
 	- Click **Run test_outputs.py**
 6. Review logs in expandable sections.
@@ -190,7 +216,3 @@ The task will be auto-discovered if the required files are present.
 - Internal task scoring pipelines with human-readable logs
 
 ---
-
-## License
-
-Add your preferred license for distribution (e.g., MIT, Apache-2.0) in a `LICENSE` file.
